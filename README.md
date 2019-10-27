@@ -17,8 +17,8 @@ An example django application running on an elastic beanstalk custom platform.
 | continuous deployment | circieci | 2.0 |
 | JS package manager | node / npm | v12.13.0 / v6.12.0 (Latest LTS: Erbium) |
 | FE build | Vue cli | 4.0.5 |
-| FE JS framework | Vue | 2.x |
-| FE UI components | vuetify | 2.1.7 |
+| FE JS framework | Vue | ^2.6.10 |
+| FE UI components | vuetify | ^2.1.0 |
 
 ## Requirements
 
