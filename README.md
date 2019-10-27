@@ -1,7 +1,7 @@
 # ebcustom
 An example django application running on an elastic beanstalk custom platform.
 
-### Stack
+## Stack
 
 | component | tool | version |
 |:-|:-|:-|
@@ -16,13 +16,14 @@ An example django application running on an elastic beanstalk custom platform.
 | AMI provisioner | ansible | 2.8.6 |
 | continuous deployment | circieci | 2.0 |
 | JS package manager | node / npm | v12.13.0 / v6.12.0 (Latest LTS: Erbium) |
-| Frontend | Vue / Vuetify | | 
+| FE build | Vue cli | 4.0.5 |
+| FE JS framework | Vue | 2.x |
+| FE UI components | vuetify | 2.1.7 |
 
-### Requirements
+## Requirements
 
 - Run CRUD operation from GUI
 - Schedule / execute batch job to worker instance
 - Run an arbitrary command on all web instances
 - batch jobs on worker instances
 - rolling / immutable deployment from circleci
-
