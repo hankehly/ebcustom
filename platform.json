@@ -37,10 +37,6 @@
             "inline": [
                 "sudo apt-get install -y ansible"
             ]
-        },
-        {
-            "type": "ansible",
-            "playbook_file": "./playbook.yml"
         }
     ]
 }
