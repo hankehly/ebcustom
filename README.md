@@ -114,7 +114,9 @@ You need to use the `ansible-local` provisioner and install ansible manually bef
 ]
 ```
 
-See: https://dev.classmethod.jp/server-side/ansible/build_ami_with_packer_using_ansible/
+See: 
+- https://dev.classmethod.jp/server-side/ansible/build_ami_with_packer_using_ansible/
+- https://www.packer.io/docs/provisioners/ansible-local.html
 
 ## Lingering questions
 - Does EB pull my changes to `platform.json` file from SCM?
