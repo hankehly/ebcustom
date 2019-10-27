@@ -35,6 +35,7 @@
       "eslint:recommended"
     ],
     "rules": {
+      "no-console": "off",
       "vue/valid-v-on": "off"
     },
     "parserOptions": {

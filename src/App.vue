@@ -120,18 +120,9 @@
             this.initialize()
         },
         methods: {
-            initialize() {
-                this.tasks = [
-                    {id: 1, name: 'Wash the dishes'},
-                    {id: 2, name: 'Feed the cat'},
-                    {id: 3, name: 'Do the laundry'},
-                    {id: 4, name: 'Repair the car'},
-                    {id: 5, name: 'Take out the track'},
-                    {id: 6, name: 'Mop the floor'},
-                    {id: 7, name: 'Clean the air filter'},
-                    {id: 8, name: 'Shovel the driveway'},
-                    {id: 9, name: 'Plan vacation'},
-                ];
+            async initialize() {
+                const response = await fetch('http://localhost:8000/tasks/');
+                this.tasks = await response.json();
             },
 
             editItem(item) {
@@ -140,9 +131,19 @@
                 this.dialog = true
             },
 
-            deleteItem(item) {
+            async deleteItem(item) {
+                if (!confirm('Are you sure you want to delete this task?')) {
+                    return;
+                }
+
                 const index = this.tasks.indexOf(item);
-                confirm('Are you sure you want to delete this task?') && this.tasks.splice(index, 1);
+                const response = await fetch(`http://localhost:8000/tasks/${item.id}`, {method: "delete"});
+
+                if (response.ok) {
+                    this.tasks.splice(index, 1);
+                } else {
+                    alert(`It looks like an error occurred: ${response.statusText}`);
+                }
             },
 
             close() {
