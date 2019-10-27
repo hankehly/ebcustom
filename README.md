@@ -44,6 +44,10 @@ ebp init # short for eb platform init
 eb platform create
 ```
 
+See "General Options" and "Platform Specific Options" for information about port listening / WSGIPath setting..
+- https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/command-options-general.html
+- https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/command-options-specific.html#command-options-python
+
 ### Troubleshooting
 ##### cant find platform.yaml in bundle
 ```
