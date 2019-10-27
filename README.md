@@ -45,6 +45,7 @@ eb platform create
 ```
 
 ### Troubleshooting
+##### cant find platform.yaml in bundle
 ```
 $ eb platform create
 Creating application version archive "app-e7a7-191027_141311".
@@ -56,6 +57,7 @@ Note: An environment called 'eb-custom-platform-builder-packer' has been created
 ```
 You need to commit `platform.yaml` to SCM
 
+##### cant find ansible-playbook executable
 ```
 $ eb platform create
 Creating application version archive "app-e7a7-191027_141311".
@@ -95,3 +97,24 @@ Hook /opt/elasticbeanstalk/hooks/packerbuild/build.rb failed. For more detail, c
                                 
 ERROR: ServiceError - Failed to create platform version 'ebcustom/1.0.2'.
 ```
+You need to use the `ansible-local` provisioner and install ansible manually beforehand.
+```
+"provisioners": [
+    {
+        "type": "shell",
+        "inline": [
+            "sudo apt-get update",
+            "sudo apt-get install -y ansible"
+        ]
+    },
+    {
+        "type": "ansible-local",
+        "playbook_file": "./playbook.yml"
+    }
+]
+```
+
+See: https://dev.classmethod.jp/server-side/ansible/build_ami_with_packer_using_ansible/
+
+## Lingering questions
+- Does EB pull my changes to `platform.json` file from SCM?
