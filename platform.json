@@ -9,17 +9,7 @@
             "type": "amazon-ebs",
             "name": "HVM AMI builder",
             "region": "us-east-1",
-            "source_ami_filter": {
-                "filters": {
-                    "virtualization-type": "hvm",
-                    "name": "ubuntu/images/*ubuntu-xenial-16.04-amd64-server-*",
-                    "root-device-type": "ebs"
-                },
-                "owners": [
-                    "099720109477"
-                ],
-                "most_recent": true
-            },
+            "source_ami": "ami-04763b3055de4860b",
             "instance_type": "t2.micro",
             "ssh_username": "ubuntu",
             "ssh_pty": "true",
