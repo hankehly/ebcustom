@@ -1,0 +1,40 @@
+{
+    "variables": {
+        "platform_name": "{{env `AWS_EB_PLATFORM_NAME`}}",
+        "platform_version": "{{env `AWS_EB_PLATFORM_VERSION`}}",
+        "platform_arn": "{{env `AWS_EB_PLATFORM_ARN`}}"
+    },
+    "builders": [
+        {
+            "type": "amazon-ebs",
+            "name": "HVM AMI builder",
+            "region": "us-east-1",
+            "source_ami_filter": {
+                "filters": {
+                    "virtualization-type": "hvm",
+                    "name": "ubuntu/images/*ubuntu-xenial-16.04-amd64-server-*",
+                    "root-device-type": "ebs"
+                },
+                "owners": [
+                    "099720109477"
+                ],
+                "most_recent": true
+            },
+            "instance_type": "t2.micro",
+            "ssh_username": "ubuntu",
+            "ssh_pty": "true",
+            "ami_name": "packer-example {{timestamp}}",
+            "tags": {
+                "eb_platform_name": "{{user `platform_name`}}",
+                "eb_platform_version": "{{user `platform_version`}}",
+                "eb_platform_arn": "{{user `platform_arn`}}"
+            }
+        }
+    ],
+    "provisioners": [
+        {
+            "type": "ansible",
+            "playbook_file": "./playbook.yml"
+        }
+    ]
+}

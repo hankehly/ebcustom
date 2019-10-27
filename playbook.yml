@@ -1,0 +1,6 @@
+- hosts: all
+  tasks:
+    - name: Create a test file
+      file:
+        path: /tmp/test.txt
+        state: touch

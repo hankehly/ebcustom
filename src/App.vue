@@ -87,9 +87,6 @@
 <script>
     export default {
         name: 'App',
-        props: {
-            source: String,
-        },
         data: () => ({
             dialog: false,
             headers: [
@@ -122,6 +119,7 @@
         },
         methods: {
             async initialize() {
+                // console.log(process.env);
                 const response = await fetch('http://localhost:8000/tasks/');
                 this.tasks = await response.json();
             },

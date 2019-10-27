@@ -27,3 +27,10 @@ An example django application running on an elastic beanstalk custom platform.
 - Run an arbitrary command on all web instances
 - batch jobs on worker instances
 - rolling / immutable deployment from circleci
+
+### Notes
+
+```sh
+ebp init # short for eb platform init
+eb platform create
+```
