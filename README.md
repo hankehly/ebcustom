@@ -10,7 +10,7 @@ An example django application running on an elastic beanstalk custom platform.
 | webserver | nginx | latest |
 | webapp server | uwsgi | latest |
 | database | RDS postre | latest |
-| python package manager | poetry | latest |
+| python package manager | poetry | [0.12.17](https://github.com/sdispater/poetry/releases/tag/0.12.17) |
 | job scheduler | celery | latest |
 | job scheduler "broker" | redis (managed) | latest |
 | AMI provisioner | ansible | latest |
