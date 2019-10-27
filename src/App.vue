@@ -9,6 +9,7 @@
                     :headers="headers"
                     :items="tasks"
                     sort-by="id"
+                    sort-desc
                     class="elevation-1"
             >
                 <template v-slot:top>
@@ -154,11 +155,25 @@
                 }, 300)
             },
 
-            save() {
+            async save() {
                 if (this.editedIndex > -1) {
+                    // update
                     Object.assign(this.tasks[this.editedIndex], this.editedItem);
                 } else {
-                    this.tasks.push(this.editedItem);
+                    // create
+                    const response = await fetch("http://localhost:8000/tasks/", {
+                        method: "POST",
+                        body: JSON.stringify(this.editedItem),
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                    });
+
+                    const createdTask = await response.json();
+
+                    if (response.ok) {
+                        this.tasks.push(createdTask);
+                    }
                 }
                 this.close();
             },
