@@ -1,0 +1,22 @@
+{
+  "name": "ebcustom",
+  "version": "1.0.0",
+  "description": "An example django application running on an elastic beanstalk custom platform.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hankehly/ebcustom.git"
+  },
+  "author": "Hank Ehly",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hankehly/ebcustom/issues"
+  },
+  "homepage": "https://github.com/hankehly/ebcustom#readme",
+  "devDependencies": {
+    "@vue/cli": "^4.0.5"
+  }
+}

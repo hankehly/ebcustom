@@ -13,9 +13,10 @@ An example django application running on an elastic beanstalk custom platform.
 | python package manager | poetry | [0.12.17](https://github.com/sdispater/poetry/releases/tag/0.12.17) |
 | job scheduler | celery | latest |
 | job scheduler "broker" | redis (managed) | latest |
-| AMI provisioner | ansible | latest |
+| AMI provisioner | ansible | 2.8.6 |
 | continuous deployment | circieci | 2.0 |
-| JS package manager | npm | latest LTS |
+| JS package manager | node / npm | v12.13.0 / v6.12.0 (Latest LTS: Erbium) |
+| Frontend | Vue / Vuetify | | 
 
 ### Requirements
 
