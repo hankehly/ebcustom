@@ -5,7 +5,7 @@ An example django application running on an elastic beanstalk custom platform.
 
 | component | tool | version |
 |:-|:-|:-|
-| webapp | django | latest |
+| webapp | django | [2.2](https://docs.djangoproject.com/en/2.2/) |
 | webserver OS | ubuntu | 16.04 LST |
 | webserver | nginx | latest |
 | webapp server | uwsgi | latest |
