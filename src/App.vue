@@ -157,10 +157,22 @@
 
             async save() {
                 if (this.editedIndex > -1) {
-                    // update
-                    Object.assign(this.tasks[this.editedIndex], this.editedItem);
+                    const task = this.tasks[this.editedIndex];
+
+                    const response = await fetch(`http://localhost:8000/tasks/${task.id}/`, {
+                        method: "PATCH",
+                        body: JSON.stringify({
+                            name: this.editedItem.name,
+                        }),
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+
+                    if (response.ok) {
+                        Object.assign(this.tasks[this.editedIndex], this.editedItem);
+                    }
                 } else {
-                    // create
                     const response = await fetch("http://localhost:8000/tasks/", {
                         method: "POST",
                         body: JSON.stringify(this.editedItem),

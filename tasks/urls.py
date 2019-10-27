@@ -5,6 +5,6 @@ from rest_framework import routers
 from .viewsets import TaskViewSet
 
 router = routers.DefaultRouter()
-router.register(r"tasks", TaskViewSet)
+router.register("tasks", TaskViewSet)
 
 urlpatterns = [path("", include(router.urls))]
