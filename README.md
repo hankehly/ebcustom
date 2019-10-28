@@ -122,5 +122,27 @@ See:
 - https://dev.classmethod.jp/server-side/ansible/build_ami_with_packer_using_ansible/
 - https://www.packer.io/docs/provisioners/ansible-local.html
 
+##### can't find ansible role
+```
+==> HVM AMI builder: Provisioning with Ansible...
+HVM AMI builder: Creating Ansible staging directory...
+HVM AMI builder: Creating directory: /tmp/packer-provisioner-ansible-local/5db6ca8a-cd97-f776-6482-b3f72648f5f2
+HVM AMI builder: Uploading main Playbook file...
+HVM AMI builder: Uploading inventory file...
+HVM AMI builder: Executing Ansible: cd /tmp/packer-provisioner-ansible-local/5db6ca8a-cd97-f776-6482-b3f72648f5f2 && ANSIBLE_FORCE_COLOR=1 PYTHONUNBUFFERED=1 ansible-playbook /tmp/packer-provisioner-ansible-local/5db6ca8a-cd97-f776-6482-b3f72648f5f2/webservers.yml --extra-vars "packer_build_name=HVM AMI builder packer_builder_type=amazon-ebs packer_http_addr="  -c local -i /tmp/packer-provisioner-ansible-local/5db6ca8a-cd97-f776-6482-b3f72648f5f2/packer-provisioner-ansible-local216834584
+HVM AMI builder: ERROR! the role 'common' was not found in /tmp/packer-provisioner-ansible-local/5db6ca8a-cd97-f776-6482-b3f72648f5f2/roles:/tmp/packer-provisioner-ansible-local/5db6ca8a-cd97-f776-6482-b3f72648f5f2:/etc/ansible/roles
+HVM AMI builder:
+HVM AMI builder: The error appears to have been in '/tmp/packer-provisioner-ansible-local/5db6ca8a-cd97-f776-6482-b3f72648f5f2/webservers.yml': line 4%!(PACKER_COMMA) column 7%!(PACKER_COMMA) but may
+HVM AMI builder: be elsewhere in the file depending on the exact syntax problem.
+HVM AMI builder:
+HVM AMI builder: The offending line appears to be:
+HVM AMI builder:
+HVM AMI builder: roles:
+HVM AMI builder: - common
+HVM AMI builder: ^ here
+HVM AMI builder:
+```
+
+
 ## Lingering questions
 - Does EB pull my changes to `platform.json` file from SCM?

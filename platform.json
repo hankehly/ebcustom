@@ -31,7 +31,8 @@
         },
         {
             "type": "ansible-local",
-            "playbook_file": "./builder/webservers.yml"
+            "playbook_file": "./builder/webservers.yml",
+            "playbook_dir": "./builder"
         }
     ]
 }
