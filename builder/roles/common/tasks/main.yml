@@ -11,3 +11,4 @@
 - name: Installing poetry
   pip:
     name: poetry
+    executable: /usr/bin/pip3
