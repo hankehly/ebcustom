@@ -1,0 +1,13 @@
+- name: Installing python3 packages
+  apt:
+    name:
+      - python3-pip
+      - python3-dev
+      - python3-pkg-resources
+      - python3-setuptools
+      - python3-venv
+    update_cache: yes
+
+- name: Installing poetry
+  pip:
+    name: poetry
