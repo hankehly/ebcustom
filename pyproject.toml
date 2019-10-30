@@ -6,7 +6,7 @@ authors = ["Hank Ehly <henry.ehly@gmail.com>"]
 license = "MIT"
 
 [tool.poetry.dependencies]
-python = "^3.7"
+python = "^3.6"
 django = "^2.2"
 djangorestframework = "^3.10"
 django-cors-headers = "^3.1"
