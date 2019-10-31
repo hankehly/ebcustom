@@ -15,7 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
-from django.views.generic import TemplateView
+
+from tasks.views import home
 
 urlpatterns = [
     # admin site
@@ -25,5 +26,5 @@ urlpatterns = [
     path("api/v1/", include("tasks.urls")),
 
     # SPA
-    path("", TemplateView.as_view(template_name="index.html")),
+    path("", home),
 ]
