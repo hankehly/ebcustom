@@ -85,6 +85,9 @@
 </template>
 
 <script>
+    // const BASE_URL = "http://ebcustom-dev.us-east-1.elasticbeanstalk.com";
+    const BASE_URL = "http://ebcustom-dev.us-east-1.elasticbeanstalk.com";
+
     export default {
         name: 'App',
         data: () => ({
@@ -120,7 +123,7 @@
         methods: {
             async initialize() {
                 // console.log(process.env);
-                const response = await fetch('http://localhost:8000/tasks/');
+                const response = await fetch(`${BASE_URL}/api/v1/tasks/`);
                 this.tasks = await response.json();
             },
 
@@ -136,7 +139,7 @@
                 }
 
                 const index = this.tasks.indexOf(item);
-                const response = await fetch(`http://localhost:8000/tasks/${item.id}`, {method: "delete"});
+                const response = await fetch(`${BASE_URL}/api/v1/tasks/${item.id}`, {method: "delete"});
 
                 if (response.ok) {
                     this.tasks.splice(index, 1);
@@ -157,7 +160,7 @@
                 if (this.editedIndex > -1) {
                     const task = this.tasks[this.editedIndex];
 
-                    const response = await fetch(`http://localhost:8000/tasks/${task.id}/`, {
+                    const response = await fetch(`${BASE_URL}/api/v1/tasks/${task.id}/`, {
                         method: "PATCH",
                         body: JSON.stringify({
                             name: this.editedItem.name,
@@ -171,7 +174,7 @@
                         Object.assign(this.tasks[this.editedIndex], this.editedItem);
                     }
                 } else {
-                    const response = await fetch("http://localhost:8000/tasks/", {
+                    const response = await fetch(`${BASE_URL}/api/v1/tasks/`, {
                         method: "POST",
                         body: JSON.stringify(this.editedItem),
                         headers: {

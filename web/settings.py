@@ -26,6 +26,7 @@ DEBUG = True
 
 # https://docs.djangoproject.com/en/2.2/ref/settings/#allowed-hosts
 ALLOWED_HOSTS = [
+    "127.0.0.1",
     ".elasticbeanstalk.com"
 ]
 
@@ -59,7 +60,9 @@ ROOT_URLCONF = "web.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [
+            os.path.join(BASE_DIR, "dist")
+        ],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
