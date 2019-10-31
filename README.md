@@ -146,3 +146,40 @@ HVM AMI builder:
 
 ## Lingering questions
 - Does EB pull my changes to `platform.json` file from SCM?
+
+
+## Provided platform setup
+```
+$ eb init
+$ eb create
+Enter Environment Name
+(default is ebcustom-dev): 
+Enter DNS CNAME prefix
+(default is ebcustom-dev): 
+
+Select a load balancer type
+1) classic
+2) application
+3) network
+(default is 2): 
+Creating application version archive "app-04df-191031_102633".
+Uploading ebcustom/app-04df-191031_102633.zip to S3. This may take a while.
+Upload Complete.
+Environment details for: ebcustom-dev
+  Application name: ebcustom
+  Region: us-east-1
+  Deployed Version: app-04df-191031_102633
+  Environment ID: e-wbmxbruwe8
+  Platform: arn:aws:elasticbeanstalk:us-east-1::platform/Python 3.6 running on 64bit Amazon Linux/2.9.3
+  Tier: WebServer-Standard-1.0
+  CNAME: ebcustom-dev.us-east-1.elasticbeanstalk.com
+  Updated: 2019-10-31 01:26:43.389000+00:00
+Printing Status:
+2019-10-31 01:26:42    INFO    createEnvironment is starting.
+2019-10-31 01:26:43    INFO    Using elasticbeanstalk-us-east-1-736867324655 as Amazon S3 storage bucket for environment data.
+2019-10-31 01:27:05    INFO    Created target group named: arn:aws:elasticloadbalancing:us-east-1:736867324655:targetgroup/awseb-AWSEB-1O5K6A16LHO2/59e139dcb958624c
+2019-10-31 01:27:05    INFO    Created security group named: sg-07ef285e7967e5946
+2019-10-31 01:27:21    INFO    Created security group named: awseb-e-wbmxbruwe8-stack-AWSEBSecurityGroup-GTCFKNA6VCPQ
+2019-10-31 01:27:21    INFO    Created Auto Scaling launch configuration named: awseb-e-wbmxbruwe8-stack-AWSEBAutoScalingLaunchConfiguration-113G8HE7JE6LA
+ -- Events -- (safe to Ctrl+C)
+```
