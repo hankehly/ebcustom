@@ -24,7 +24,10 @@ SECRET_KEY = "og5_uuc#rw#e*=q5$f-t+x1iboxmk$l+7c1x5vxju&^-8c1c90"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+# https://docs.djangoproject.com/en/2.2/ref/settings/#allowed-hosts
+ALLOWED_HOSTS = [
+    ".elasticbeanstalk.com"
+]
 
 # Application definition
 
