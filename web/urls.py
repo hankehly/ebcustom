@@ -22,7 +22,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     # api
-    path("api/v1", include("tasks.urls")),
+    path("api/v1/", include("tasks.urls")),
 
     # SPA
     path("", TemplateView.as_view(template_name="index.html")),
