@@ -99,3 +99,12 @@ TODO
 
 #### I want to include a file in the deployed app but not commit it to SCM
 Copy `.gitignore` to `.ebignore` if you haven't already. Add the file to `.gitignore` and leave it out of `.ebignore`. EB will deploy it, but git will not manage it.
+
+#### How do I update the healthcheck url
+See Configuration -> Load Balancer -> Processes.
+You should also be able to set an option_setting, but it doesn't get applied for some reason..
+```yaml
+option_settings:
+  aws:elasticbeanstalk:application:
+    Application Healthcheck URL: /ping/
+```
