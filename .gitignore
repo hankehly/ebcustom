@@ -34,3 +34,4 @@ db.sqlite3
 static/
 HEAD
 requirements.txt
+*.egg-info
