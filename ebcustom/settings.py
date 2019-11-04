@@ -26,8 +26,8 @@ DEBUG = True
 
 # https://docs.djangoproject.com/en/2.2/ref/settings/#allowed-hosts
 ALLOWED_HOSTS = [
-    "127.0.0.1",
-    ".elasticbeanstalk.com"
+    "127.0.0.1",  # local development
+    ".elasticbeanstalk.com"  # production
 ]
 
 # Application definition
@@ -45,6 +45,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    "ebcustom.middleware.HealthCheckMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "corsheaders.middleware.CorsMiddleware",
@@ -137,7 +138,6 @@ REST_FRAMEWORK = {
 
 # demo app, no security necessary
 CORS_ORIGIN_ALLOW_ALL = True
-
 
 # https://docs.djangoproject.com/en/2.2/topics/cache/
 CACHES = {
