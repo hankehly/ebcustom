@@ -55,7 +55,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = "web.urls"
+ROOT_URLCONF = "ebcustom.urls"
 
 TEMPLATES = [
     {
@@ -73,7 +73,7 @@ TEMPLATES = [
     }
 ]
 
-WSGI_APPLICATION = "web.wsgi.application"
+WSGI_APPLICATION = "ebcustom.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
@@ -137,3 +137,15 @@ REST_FRAMEWORK = {
 
 # demo app, no security necessary
 CORS_ORIGIN_ALLOW_ALL = True
+
+
+# https://docs.djangoproject.com/en/2.2/topics/cache/
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/1",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    }
+}
