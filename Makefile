@@ -1,4 +1,9 @@
 deploy:
+	#
+	# TODO:
+	#   Parse toml and generate requirements.txt (https://github.com/uiri/toml)
+	#
+
 	# Output HEAD sha to file named "HEAD"
 	git rev-parse HEAD > HEAD
 
