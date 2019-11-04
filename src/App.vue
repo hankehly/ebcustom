@@ -79,8 +79,7 @@
         </v-content>
 
         <v-footer color="indigo" app>
-            <span class="white--text">&copy; 2019 - github.com/hankehly/ebcustom</span>
-            <span>{{ redisCachedValue }}</span>
+            <span class="white--text">&copy; 2019 - github.com/hankehly/ebcustom (redis cached value: {{ redisCachedValue }})</span>
         </v-footer>
     </v-app>
 </template>
@@ -104,32 +103,33 @@
                 name: '',
             },
             webApiBaseUrl: process.env.VUE_APP_WEB_API_BASE_URL,
+            redisCachedValue: '',
         }),
         computed: {
             formTitle() {
                 return this.editedIndex === -1 ? 'New Task' : 'Edit Task'
             },
-            redisCachedValue() {
-                try {
-                    return document.head.querySelector("meta[name=ebcustom-redis-cached-value]").content;
-                } catch (e) {
-                    return '';
-                }
-            }
         },
         watch: {
             dialog(val) {
                 val || this.close()
             },
         },
-        created() {
+        async created() {
             console.log("process.env", process.env);
-            this.initialize()
+            this.initialize();
+            this.redisCachedValue = await this.getCachedValue();
         },
         methods: {
             async initialize() {
                 const response = await fetch(`${this.webApiBaseUrl}/api/v1/tasks/`);
                 this.tasks = await response.json();
+            },
+
+            async getCachedValue() {
+                const response = await fetch(`${this.webApiBaseUrl}/api/v1/tasks/get_cached_value`);
+                const data = await response.json();
+                return data["cached_value"];
             },
 
             editItem(item) {
