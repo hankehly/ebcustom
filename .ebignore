@@ -32,4 +32,6 @@ db.sqlite3
 .vagrant
 *.log
 static/
-HEAD
+
+# Do not include HEAD file!
+
