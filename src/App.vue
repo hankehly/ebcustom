@@ -80,14 +80,12 @@
 
         <v-footer color="indigo" app>
             <span class="white--text">&copy; 2019 - github.com/hankehly/ebcustom</span>
+            <span>{{ redisCachedValue }}</span>
         </v-footer>
     </v-app>
 </template>
 
 <script>
-    // const BASE_URL = "http://ebcustom-dev.us-east-1.elasticbeanstalk.com";
-    const BASE_URL = "http://ebcustom-dev.us-east-1.elasticbeanstalk.com";
-
     export default {
         name: 'App',
         data: () => ({
@@ -105,25 +103,32 @@
             defaultItem: {
                 name: '',
             },
+            webApiBaseUrl: process.env.VUE_APP_WEB_API_BASE_URL,
         }),
         computed: {
             formTitle() {
                 return this.editedIndex === -1 ? 'New Task' : 'Edit Task'
             },
+            redisCachedValue() {
+                try {
+                    return document.head.querySelector("meta[name=ebcustom-redis-cached-value]").content;
+                } catch (e) {
+                    return '';
+                }
+            }
         },
         watch: {
             dialog(val) {
                 val || this.close()
             },
         },
-
         created() {
+            console.log("process.env", process.env);
             this.initialize()
         },
         methods: {
             async initialize() {
-                // console.log(process.env);
-                const response = await fetch(`${BASE_URL}/api/v1/tasks/`);
+                const response = await fetch(`${this.webApiBaseUrl}/api/v1/tasks/`);
                 this.tasks = await response.json();
             },
 
@@ -139,7 +144,7 @@
                 }
 
                 const index = this.tasks.indexOf(item);
-                const response = await fetch(`${BASE_URL}/api/v1/tasks/${item.id}`, {method: "delete"});
+                const response = await fetch(`${this.webApiBaseUrl}/api/v1/tasks/${item.id}`, {method: "delete"});
 
                 if (response.ok) {
                     this.tasks.splice(index, 1);
@@ -160,7 +165,7 @@
                 if (this.editedIndex > -1) {
                     const task = this.tasks[this.editedIndex];
 
-                    const response = await fetch(`${BASE_URL}/api/v1/tasks/${task.id}/`, {
+                    const response = await fetch(`${this.webApiBaseUrl}/api/v1/tasks/${task.id}/`, {
                         method: "PATCH",
                         body: JSON.stringify({
                             name: this.editedItem.name,
@@ -174,7 +179,7 @@
                         Object.assign(this.tasks[this.editedIndex], this.editedItem);
                     }
                 } else {
-                    const response = await fetch(`${BASE_URL}/api/v1/tasks/`, {
+                    const response = await fetch(`${this.webApiBaseUrl}/api/v1/tasks/`, {
                         method: "POST",
                         body: JSON.stringify(this.editedItem),
                         headers: {
