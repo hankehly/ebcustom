@@ -11,9 +11,10 @@ django = "^2.2"
 djangorestframework = "^3.10"
 django-cors-headers = "^3.1"
 psycopg2 = "^2.8"
+django-redis = "^4.10"
 
 [tool.poetry.dev-dependencies]
-ansible = "^2.8"
+toml = "^0.10.0"
 
 [build-system]
 requires = ["poetry>=0.12"]

@@ -1,8 +1,6 @@
 deploy:
-	#
-	# TODO:
-	#   Parse toml and generate requirements.txt (https://github.com/uiri/toml)
-	#
+	# Generate a requirements.txt file from poetry-lock.json
+	python requirements.py > requirements.txt
 
 	# Output HEAD sha to file named "HEAD"
 	git rev-parse HEAD > HEAD

@@ -33,5 +33,6 @@ db.sqlite3
 *.log
 static/
 
-# Do not include HEAD file!
+# Do not include HEAD here!
+# Do not include requirements.txt here!
 
