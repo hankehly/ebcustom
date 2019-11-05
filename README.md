@@ -108,3 +108,13 @@ option_settings:
   aws:elasticbeanstalk:application:
     Application Healthcheck URL: /ping/
 ```
+
+
+## Troubleshooting
+```
+$ eb deploy
+2019-11-05 00:25:19    INFO    Environment update is starting.      
+2019-11-05 00:25:42    ERROR   Service:AmazonCloudFormation, Message:Stack named 'awseb-e-wbmxbruwe8-stack' aborted operation. Current state: 'UPDATE_ROLLBACK_IN_PROGRESS'  Reason: The following resource(s) failed to create: [MyCacheSecurityGroup]. 
+2019-11-05 00:25:42    ERROR   Creating security group named: sg-0fee88b49cda8b643 failed Reason: Invalid id: "awseb-e-wbmxbruwe8-stack-AWSEBSecurityGroup-GTCFKNA6VCPQ" (expecting "sg-...") (Service: AmazonEC2; Status Code: 400; Error Code: InvalidGroupId.Malformed; Request ID: fdc762ec-f799-4753-bf2e-110d62ccf87d)
+2019-11-05 00:25:42    ERROR   Failed to deploy application. 
+```
