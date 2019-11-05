@@ -109,6 +109,9 @@ option_settings:
     Application Healthcheck URL: /ping/
 ```
 
+#### How do I force restart the web server?
+TODO
+
 
 ## Troubleshooting
 #### The following resource(s) failed to create: MyCacheSecurityGroup.
