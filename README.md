@@ -97,7 +97,12 @@ else:
 TODO
 
 #### I want to add an environment variable to all my web servers
-TODO
+Option 1) Use the ebcli commandline tool
+```sh
+eb setenv FOO=VAR
+```
+Option 2) Use the AWS console
+See Configuration -> Software -> Environment properties
 
 #### How do I roll back to the previous version AND sync the database?
 TODO
