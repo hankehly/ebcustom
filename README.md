@@ -26,7 +26,7 @@ An example django application running on an elastic beanstalk provided platform.
 ## TODO:
 - On deploy, create a `requirements.txt` file by parsing the `pyproject.toml`. Add the `requirements.txt` file to `.gitignore` but **leave it out of the .ebignore** file. Will probably want to copy contents of `.gitignore` to `.ebignore` beforehand.
 
-## Q&A
+## How do I...?
 
 #### Does EB pull my changes to files from GitHub, SCM?
 It pulls changes to your application from `.git` not GitHub.
@@ -65,6 +65,11 @@ option_settings:
 
 #### Can I have a custom uwsgi setup?
 TODO
+
+#### How do I temporarily stop an environment without terminating it?
+Use time based scaling (see Configuration -> Capacity -> Time Based Scaling)
+- [Link](https://jun711.github.io/aws/how-to-pause-or-stop-elastic-beanstalk-environment-from-running/#:~:text=There%20is%20no%20straightforward%20way,pay%20when%20you%20use%20it.)
+- [Link](https://hackernoon.com/how-to-save-on-aws-elastic-beanstalk-ec2-machines-by-putting-them-to-sleep-d8533aeb610a)
 
 #### How to add an RDS instance?
 Create an instance and connect in the GUI configuration screen, or create one with the beanstalk wizard. This will set the `RDS_*` environment variables for use in the app. [See more](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/create-deploy-python-rds.html).
