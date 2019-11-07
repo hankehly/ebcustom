@@ -24,7 +24,23 @@ An example django application running on an elastic beanstalk provided platform.
 - [ ] rolling / immutable deployment from circleci
 - [x] versioned assets served from S3
 
+## TODO
+- Move RDS, ElastiCache, etc.. external resources to Terraform config
+
 ## Q&A
+
+#### In this example project, what AWS resources are managed by terraform and what are managed by beanstalk?
+| resource    | terraform | beanstalk |
+|:------------|:----------|:---------:|
+| EC2         |           |     √     |
+| RDS         |     √     |           |
+| ElastiCache |     √     |           |
+
+#### How do I rename an environment?
+You have to back up the environment and the restore it. Someone [asked this question](https://forums.aws.amazon.com/thread.jspa?threadID=151978) on the forum. And someone else created a [blog post](http://pminkov.github.io/blog/how-to-shut-down-and-restore-an-elastic-beanstalk-environment.html) about it.
+
+#### What things can I specify in an `.ebextensions` config file?
+See [this page](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/customize-containers-ec2.html)
 
 #### Does EB pull my changes to files from GitHub, SCM?
 It pulls changes to your application from `.git` not GitHub.
