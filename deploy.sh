@@ -9,7 +9,7 @@ echo $SHA >HEAD
 npm run build -- --mode production
 
 # Upload assets to S3 with public-read access
-aws s3 sync --acl public-read ./dist s3://octo-waffle/ebcustom/${SHA}/
+poetry run aws s3 sync --acl public-read ./dist s3://octo-waffle/ebcustom/${SHA}/
 
 # Deploy new app version to beanstalk
 # Bundle includes HEAD file which tells us
