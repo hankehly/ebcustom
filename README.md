@@ -30,11 +30,15 @@ An example django application running on an elastic beanstalk provided platform.
 ## Q&A
 
 #### In this example project, what AWS resources are managed by terraform and what are managed by beanstalk?
-| resource    | terraform | beanstalk |
-|:------------|:----------|:---------:|
-| EC2         |           |     √     |
-| RDS         |     √     |           |
-| ElastiCache |     √     |           |
+| resource                 | terraform | beanstalk |
+|:-------------------------|:----------|:---------:|
+| EC2 Instances            |           |     √     |
+| RDS                      |     √     |           |
+| ElastiCache              |     √     |           |
+| Security Groups          |     √     |           |
+| VPC                      |     √     |           |
+| SQS                      |     √     |           |
+| Elastic Beanstalk Config |     √     |           |
 
 #### How do I rename an environment?
 You have to back up the environment and the restore it. Someone [asked this question](https://forums.aws.amazon.com/thread.jspa?threadID=151978) on the forum. And someone else created a [blog post](http://pminkov.github.io/blog/how-to-shut-down-and-restore-an-elastic-beanstalk-environment.html) about it.

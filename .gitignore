@@ -35,3 +35,6 @@ static/
 HEAD
 requirements.txt
 *.egg-info
+*.tfstate
+*.tfstate.backup
+.terraform/
