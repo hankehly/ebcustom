@@ -2,7 +2,7 @@
 poetry run python requirements.py >requirements.txt
 
 # Output HEAD sha to file named "HEAD"
-SHA=$(git rev-parse HEAD)
+SHA=$(git rev-parse --short HEAD)
 echo $SHA >HEAD
 
 # Build production assets
