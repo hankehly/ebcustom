@@ -39,6 +39,11 @@ An example django application running on an elastic beanstalk provided platform.
 | VPC                      |     √     |           |
 | SQS                      |     √     |           |
 | Elastic Beanstalk Config |     √     |           |
+| CloudFront               |     √     |           |
+
+
+#### How do I connect my domain name with cloudfront distribution?
+Follow [this guide](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/routing-to-cloudfront-distribution.html). Be careful about the record type.
 
 #### How do I rename an environment?
 You have to back up the environment and the restore it. Someone [asked this question](https://forums.aws.amazon.com/thread.jspa?threadID=151978) on the forum. And someone else created a [blog post](http://pminkov.github.io/blog/how-to-shut-down-and-restore-an-elastic-beanstalk-environment.html) about it.
