@@ -1,3 +1,3 @@
-variable "region" {
-  default = "us-east-1"
+variable "tf_description" {
+  default = "Managed by Terraform"
 }

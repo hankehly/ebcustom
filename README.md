@@ -30,16 +30,20 @@ An example django application running on an elastic beanstalk provided platform.
 ## Q&A
 
 #### In this example project, what AWS resources are managed by terraform and what are managed by beanstalk?
-| resource                 | terraform | beanstalk |
-|:-------------------------|:----------|:---------:|
-| EC2 Instances            |           |     √     |
-| RDS                      |     √     |           |
-| ElastiCache              |     √     |           |
-| Security Groups          |     √     |           |
-| VPC                      |     √     |           |
-| SQS                      |     √     |           |
-| Elastic Beanstalk Config |     √     |           |
-| CloudFront               |     √     |           |
+| Resource                      | Terraform | Beanstalk |
+|:------------------------------|:----------|:---------:|
+| EC2 Instance Creation         |           |     √     |
+| RDS                           |     √     |           |
+| ElastiCache                   |     √     |           |
+| Security Groups               |     √     |           |
+| VPC                           |     √     |           |
+| SQS                           |     √     |           |
+| Beanstalk Application         |     √     |           |
+| Beanstalk Environment         |     √     |           |
+| Beanstalk Application Version |           |     √     |
+| Beanstalk Configuration       |           |     √     |
+| app `option_settings`         |           |     √     |
+| CloudFront                    |     √     |           |
 
 
 #### How do I connect my domain name with cloudfront distribution?
