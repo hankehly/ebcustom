@@ -10,36 +10,35 @@ locals {
 }
 
 # TODO
-# security groups
-# vpc (default)
+# security groups ?
+# vpc (default) ?
 
 ####################
 # Elastic Beanstalk
 ####################
 
-resource "aws_elastic_beanstalk_application" "ebcustom_app" {
+resource "aws_elastic_beanstalk_application" "app" {
   name        = "ebcustom"
   description = "ebcustom app managed by terraform"
   tags        = local.common_tags
 }
 
-resource "aws_elastic_beanstalk_environment" "ebcustom_beanstalk_wweb_environment" {
-  application         = aws_elastic_beanstalk_application.ebcustom_app.name
+resource "aws_elastic_beanstalk_environment" "web" {
+  application         = aws_elastic_beanstalk_application.app.name
   name                = "dev-web"
-  cname_prefix        = "dev-web"
   description         = "ebcustom app development web environment"
   tier                = "WebServer"
-  solution_stack_name = "Python 3.6 version 2.9.3"
+  solution_stack_name = "64bit Amazon Linux 2018.03 v2.9.3 running Python 3.6"
   tags                = local.common_tags
 }
 
-resource "aws_elastic_beanstalk_environment" "ebcustom_beanstalk_worker_environment" {
-  application         = aws_elastic_beanstalk_application.ebcustom_app.name
+# worker environment cant have a cname prefix
+resource "aws_elastic_beanstalk_environment" "worker" {
+  application         = aws_elastic_beanstalk_application.app.name
   name                = "dev-worker"
-  cname_prefix        = "dev-worker"
   description         = "ebcustom app development worker environment"
   tier                = "Worker"
-  solution_stack_name = "Python 3.6 version 2.9.3"
+  solution_stack_name = "64bit Amazon Linux 2018.03 v2.9.3 running Python 3.6"
   tags                = local.common_tags
 }
 
@@ -47,7 +46,7 @@ resource "aws_elastic_beanstalk_environment" "ebcustom_beanstalk_worker_environm
 # S3
 ####################
 
-resource "aws_s3_bucket" "ebcustom_public_assets_bucket" {
+resource "aws_s3_bucket" "bucket" {
   bucket = "ebcustom-public-assets"
   acl    = "public-read"
   tags   = local.common_tags
@@ -58,7 +57,11 @@ resource "aws_s3_bucket" "ebcustom_public_assets_bucket" {
 # CloudFront
 ####################
 
-resource "aws_cloudfront_distribution" "ebcustom_cloudfront_distribution" {
+resource "aws_cloudfront_distribution" "assets" {
+  aliases = [
+    "public.hankehly.xyz"
+  ]
+
   comment         = "ebcustom public assets cloudfront distribution"
   enabled         = false
   is_ipv6_enabled = true
@@ -72,7 +75,7 @@ resource "aws_cloudfront_distribution" "ebcustom_cloudfront_distribution" {
       "GET"
     ]
     compress               = true
-    target_origin_id       = "S3-octo-waffle/ebcustom"
+    target_origin_id       = "S3-ebcustom-public-assets"
     viewer_protocol_policy = "redirect-to-https"
     forwarded_values {
       query_string = false
@@ -82,8 +85,8 @@ resource "aws_cloudfront_distribution" "ebcustom_cloudfront_distribution" {
     }
   }
   origin {
-    domain_name = "public.hankehly.xyz"
-    origin_id   = "S3-octo-waffle/ebcustom"
+    domain_name = aws_s3_bucket.bucket.bucket_regional_domain_name
+    origin_id   = "S3-ebcustom-public-assets"
   }
   price_class     = "PriceClass_All"
   restrictions {
@@ -92,7 +95,7 @@ resource "aws_cloudfront_distribution" "ebcustom_cloudfront_distribution" {
     }
   }
   viewer_certificate {
-    acm_certificate_arn      = aws_acm_certificate.ebcustom_acm_certificate.arn
+    acm_certificate_arn      = aws_acm_certificate.cert.arn
     ssl_support_method       = "sni-only"
     minimum_protocol_version = "TLSv1.1_2016"
   }
@@ -103,10 +106,11 @@ resource "aws_cloudfront_distribution" "ebcustom_cloudfront_distribution" {
 # ElastiCache
 ####################
 
-resource "aws_elasticache_cluster" "ebcustom_elasticache_cluster" {
+resource "aws_elasticache_cluster" "redis" {
   cluster_id      = "ebcustom-redis-cluster"
   engine          = "redis"
   engine_version  = "5.0.5"
+  node_type       = "cache.t2.micro"
   num_cache_nodes = 1
   port            = 6379
   tags            = local.common_tags
@@ -116,7 +120,7 @@ resource "aws_elasticache_cluster" "ebcustom_elasticache_cluster" {
 # RDS
 ####################
 
-resource "aws_db_instance" "ebcustom_db_instance" {
+resource "aws_db_instance" "db" {
   allocated_storage          = 20
   auto_minor_version_upgrade = true
   instance_class             = "db.t2.micro"
@@ -140,7 +144,7 @@ resource "aws_db_instance" "ebcustom_db_instance" {
 # ACM
 ####################
 
-resource "aws_acm_certificate" "ebcustom_acm_certificate" {
+resource "aws_acm_certificate" "cert" {
   domain_name               = "hankehly.xyz"
   validation_method         = "DNS"
   subject_alternative_names = [
@@ -150,10 +154,10 @@ resource "aws_acm_certificate" "ebcustom_acm_certificate" {
   tags                      = local.common_tags
 }
 
-resource "aws_acm_certificate_validation" "ebcustom_acm_certificate_validation" {
-  certificate_arn         = aws_acm_certificate.ebcustom_acm_certificate.arn
+resource "aws_acm_certificate_validation" "cert_validation" {
+  certificate_arn         = aws_acm_certificate.cert.arn
   validation_record_fqdns = [
-    aws_route53_record.ebcustom_acm_certificate_validation.fqdn
+    aws_route53_record.cert_validation.fqdn
   ]
 }
 
@@ -163,28 +167,29 @@ resource "aws_acm_certificate_validation" "ebcustom_acm_certificate_validation" 
 ####################
 
 # NS and SOA records are created automatically
-resource "aws_route53_zone" "ebcustom_route53_zone" {
+resource "aws_route53_zone" "primary" {
   name    = "hankehly.xyz."
   comment = "ebcustom app domain name"
   tags    = local.common_tags
 }
 
-resource "aws_route53_record" "ebcustom_acm_certificate_validation" {
-  name    = aws_acm_certificate.ebcustom_acm_certificate.domain_validation_options.0.resource_record_name
-  type    = aws_acm_certificate.ebcustom_acm_certificate.domain_validation_options.0.resource_record_type
-  zone_id = aws_route53_zone.ebcustom_route53_zone.zone_id
+resource "aws_route53_record" "cert_validation" {
+  name    = aws_acm_certificate.cert.domain_validation_options.0.resource_record_name
+  type    = aws_acm_certificate.cert.domain_validation_options.0.resource_record_type
+  zone_id = aws_route53_zone.primary.zone_id
+  ttl     = 300
   records = [
-    aws_acm_certificate.ebcustom_acm_certificate.domain_validation_options.0.resource_record_value
+    aws_acm_certificate.cert.domain_validation_options.0.resource_record_value
   ]
 }
 
 resource "aws_route53_record" "public" {
   name    = "public.hankehly.xyz"
   type    = "A"
-  zone_id = aws_route53_zone.ebcustom_route53_zone.zone_id
+  zone_id = aws_route53_zone.primary.zone_id
   alias {
     evaluate_target_health = false
-    name                   = aws_cloudfront_distribution.ebcustom_cloudfront_distribution.domain_name
-    zone_id                = aws_cloudfront_distribution.ebcustom_cloudfront_distribution.hosted_zone_id
+    name                   = aws_cloudfront_distribution.assets.domain_name
+    zone_id                = aws_cloudfront_distribution.assets.hosted_zone_id
   }
 }
