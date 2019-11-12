@@ -23,12 +23,22 @@ resource "aws_elastic_beanstalk_application" "ebcustom_app" {
   tags        = local.common_tags
 }
 
-resource "aws_elastic_beanstalk_environment" "ebcustom_dev_app_env" {
+resource "aws_elastic_beanstalk_environment" "ebcustom_beanstalk_wweb_environment" {
   application         = aws_elastic_beanstalk_application.ebcustom_app.name
-  name                = "dev"
-  cname_prefix        = "dev"
-  description         = "ebcustom app development environment"
+  name                = "dev-web"
+  cname_prefix        = "dev-web"
+  description         = "ebcustom app development web environment"
   tier                = "WebServer"
+  solution_stack_name = "Python 3.6 version 2.9.3"
+  tags                = local.common_tags
+}
+
+resource "aws_elastic_beanstalk_environment" "ebcustom_beanstalk_worker_environment" {
+  application         = aws_elastic_beanstalk_application.ebcustom_app.name
+  name                = "dev-worker"
+  cname_prefix        = "dev-worker"
+  description         = "ebcustom app development worker environment"
+  tier                = "Worker"
   solution_stack_name = "Python 3.6 version 2.9.3"
   tags                = local.common_tags
 }
