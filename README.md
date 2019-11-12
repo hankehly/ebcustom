@@ -26,6 +26,33 @@ An example django application running on an elastic beanstalk provided platform.
 
 ## TODO
 - Move RDS, ElastiCache, etc.. external resources to Terraform config
+- Solve TF issues
+```
+Error: Error waiting for Elastic Beanstalk Environment (e-p9ca2vn3ea) to become ready: 1 error occurred:
+	* 2019-11-12 00:55:44.169 +0000 UTC (e-p9ca2vn3ea) : [Instance: i-0899f67a07862d1d3] Command failed on instance. Return code: 1 Output: unable to sign request without credentials set - (Aws::Errors::MissingCredentialsError). 
+Hook /opt/elasticbeanstalk/addons/sqsd/hooks/firstboot/02-start-sqsd.sh failed. For more detail, check /var/log/eb-activity.log using console or EB CLI.
+
+
+
+  on platform.tf line 36, in resource "aws_elastic_beanstalk_environment" "worker":
+  36: resource "aws_elastic_beanstalk_environment" "worker" {
+
+
+
+Error: Error creating DB Instance: DBInstanceAlreadyExists: DB Instance already exists
+	status code: 400, request id: 896bde4e-66d5-4812-926e-02c6f532bd46
+
+  on platform.tf line 123, in resource "aws_db_instance" "db":
+ 123: resource "aws_db_instance" "db" {
+
+
+
+Error: [ERR]: Error building changeset: InvalidChangeBatch: [Tried to create resource record set [name='_f30674a3a8451828b494c3d5228ac643.hankehly.xyz.', type='CNAME'] but it already exists]
+	status code: 400, request id: c45a612e-b12a-4a93-a396-a0fe35842e30
+
+  on platform.tf line 176, in resource "aws_route53_record" "cert_validation":
+ 176: resource "aws_route53_record" "cert_validation" {
+```
 
 ## Q&A
 
