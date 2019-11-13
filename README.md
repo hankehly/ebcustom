@@ -18,11 +18,11 @@ An example django application running on an elastic beanstalk provided platform.
 
 ## Requirements
 - [x] Run CRUD operation from GUI
-- [ ] Schedule / execute batch job to worker instance
 - [ ] Run an arbitrary command on all web instances
-- [ ] batch jobs on worker instances
-- [ ] rolling / immutable deployment from circleci
-- [x] versioned assets served from S3
+- [ ] Run CRON jobs on worker instance
+- [ ] Run queued job on worker instance
+- [ ] Rolling / immutable deployment from circleci
+- [x] Versioned assets served from cloudfront
 
 ## TODO
 - Move RDS, ElastiCache, etc.. external resources to Terraform config
