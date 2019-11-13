@@ -10,8 +10,9 @@ locals {
 }
 
 # TODO
-# security groups ?
-# vpc (default) ?
+# VPC (default) ?
+# Security Groups ?
+# SQS
 
 ####################
 # Elastic Beanstalk
