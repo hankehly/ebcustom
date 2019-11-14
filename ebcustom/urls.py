@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 
-from tasks.views import home
+from tasks.views import home, testjob
 
 urlpatterns = [
     # admin site
@@ -27,4 +27,7 @@ urlpatterns = [
 
     # SPA
     path("", home),
+
+    # For cron job
+    path("testjob", testjob)
 ]

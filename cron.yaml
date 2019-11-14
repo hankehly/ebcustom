@@ -1,0 +1,7 @@
+# Periodic Tasks
+# https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/using-features-managing-env-tiers.html#worker-periodictasks
+version: 1
+cron:
+  - name: "testjob"
+    url: "/testjob"
+    schedule: "* * * * *"
