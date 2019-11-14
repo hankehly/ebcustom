@@ -27,6 +27,8 @@ DEBUG = True
 # https://docs.djangoproject.com/en/2.2/ref/settings/#allowed-hosts
 ALLOWED_HOSTS = [
     "127.0.0.1",  # local development
+    "localhost",
+    ".ec2.internal",
     ".elasticbeanstalk.com"  # production
 ]
 
