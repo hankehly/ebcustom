@@ -5,14 +5,16 @@ provider "aws" {
 
 locals {
   common_tags = {
-    Description = var.tf_description
+    Description = "Managed by Terraform"
   }
 }
+
+variable "dbpass" {}
 
 # TODO
 # VPC (default) ?
 # Security Groups ?
-# SQS
+
 
 ####################
 # Elastic Beanstalk
@@ -31,6 +33,42 @@ resource "aws_elastic_beanstalk_environment" "web" {
   tier                = "WebServer"
   solution_stack_name = "64bit Amazon Linux 2018.03 v2.9.3 running Python 3.6"
   tags                = local.common_tags
+
+  // share these with the worker env
+  // add variables for sqs endpoint
+  setting {
+    name      = "aws:elasticbeanstalk:application:environment"
+    namespace = "DB_NAME"
+    value     = "ebcustom"
+  }
+
+  setting {
+    name      = "aws:elasticbeanstalk:application:environment"
+    namespace = "DB_USERNAME"
+    value     = "ebcustom"
+  }
+
+  setting {
+    name      = "aws:elasticbeanstalk:application:environment"
+    namespace = "DB_PASSWORD"
+    value     = var.dbpass
+  }
+
+  setting {
+    name      = "aws:elasticbeanstalk:application:environment"
+    namespace = "DB_HOSTNAME"
+    value     = aws_db_instance.db.endpoint
+  }
+
+  setting {
+    name      = "aws:elasticbeanstalk:application:environment"
+    namespace = "DB_PORT"
+    value     = 5432
+  }
+
+  depends_on = [
+    aws_db_instance.db
+  ]
 }
 
 # worker environment cant have a cname prefix
@@ -41,7 +79,26 @@ resource "aws_elastic_beanstalk_environment" "worker" {
   tier                = "Worker"
   solution_stack_name = "64bit Amazon Linux 2018.03 v2.9.3 running Python 3.6"
   tags                = local.common_tags
+
+  setting {
+    namespace = "aws:elasticbeanstalk:sqsd"
+    name      = "HttpPath"
+    value     = "/queue"
+  }
+
+  setting {
+    namespace = "aws:elasticbeanstalk:sqsd"
+    name      = "WorkerQueueURL"
+    value     = aws_sqs_queue.worker_queue.id
+  }
+
+  depends_on = [
+    aws_db_instance.db,
+    aws_sqs_queue.worker_queue,
+    aws_elasticache_cluster.redis
+  ]
 }
+
 
 ####################
 # S3
@@ -103,6 +160,7 @@ resource "aws_cloudfront_distribution" "assets" {
   tags            = local.common_tags
 }
 
+
 ####################
 # ElastiCache
 ####################
@@ -116,6 +174,7 @@ resource "aws_elasticache_cluster" "redis" {
   port            = 6379
   tags            = local.common_tags
 }
+
 
 ####################
 # RDS
@@ -140,6 +199,7 @@ resource "aws_db_instance" "db" {
   storage_type               = "gp2"
   tags                       = local.common_tags
 }
+
 
 ####################
 # ACM
@@ -193,4 +253,17 @@ resource "aws_route53_record" "public" {
     name                   = aws_cloudfront_distribution.assets.domain_name
     zone_id                = aws_cloudfront_distribution.assets.hosted_zone_id
   }
+}
+
+
+####################
+# SQS
+####################
+
+resource "aws_sqs_queue" "worker_queue" {
+  name = "worker-queue.standard"
+  //  name                        = "worker-queue.fifo"
+  //  fifo_queue                  = true
+  //  content_based_deduplication = true
+  tags = local.common_tags
 }
