@@ -1,4 +1,5 @@
 # Generate a requirements.txt file from poetry-lock.json
+# this might also be OK: `poetry show --no-dev | awk '{printf("%s==%s\n", $1, $2)}'`
 poetry run python requirements.py >requirements.txt
 
 # Output HEAD sha to file named "HEAD"
