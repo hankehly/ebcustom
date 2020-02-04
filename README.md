@@ -20,13 +20,10 @@ An example django application running on AWS Elastic Beanstalk.
 ## Requirements
 - [x] Run CRUD operations from GUI
 - [x] Run CRON scheduled job on worker instance
-- [ ] Run queued job on worker instance
+- [ ] Queue a worker job from a web endpoint
 - [x] Versioned assets served from cloudfront
 - [ ] Run an arbitrary command on a web instance
 - [ ] Rolling / immutable deployments on code push
-
-## TODO
-- SQS triggered jobs on worker instances
 
 ## Q&A
 
