@@ -1,65 +1,39 @@
 # ebcustom
-An example django application running on an elastic beanstalk provided platform.
+An example django application running on AWS Elastic Beanstalk.
 
 ## Stack
 
 | component | tool | version |
 |:-|:-|:-|
-| webapp | django | [2.2](https://docs.djangoproject.com/en/2.2/) |
-| database | RDS postre | latest |
-| python package manager | poetry | [0.12.17](https://github.com/sdispater/poetry/releases/tag/0.12.17) |
-| job scheduler | celery | latest |
-| job scheduler "broker" | redis (managed) | latest |
-| continuous deployment | circieci | 2.0 |
-| JS package manager | node / npm | v12.13.0 / v6.12.0 (Latest LTS: Erbium) |
-| FE build | Vue cli | 4.0.5 |
-| FE JS framework | Vue | ^2.6.10 |
-| FE UI components | vuetify | ^2.1.0 |
+| web app | django | [2.2](https://docs.djangoproject.com/en/2.2/) |
+| database | RDS PostgreSQL | latest |
+| python package manager | poetry | [1.0](https://github.com/sdispater/poetry/releases) |
+| CI | github actions | |
+| cache | redis | latest |
+| batch job runner | elastic beanstalk worker instance |
+| javascript package manager | node / npm | v12.13.0 / v6.12.0 (Latest LTS: Erbium) |
+| frontend build | Vue cli | 4.0 |
+| SPA framework | Vue | ^2.6.10 |
+| UI component framework | vuetify | ^2.1.0 |
+| static asset server | cloudfront (s3 backend) | |
 
 ## Requirements
-- [x] Run CRUD operation from GUI
-- [ ] Run an arbitrary command on all web instances
-- [ ] Run CRON jobs on worker instance
+- [x] Run CRUD operations from GUI
+- [x] Run CRON scheduled job on worker instance
 - [ ] Run queued job on worker instance
-- [ ] Rolling / immutable deployment from circleci
 - [x] Versioned assets served from cloudfront
+- [ ] Run an arbitrary command on a web instance
+- [ ] Rolling / immutable deployments on code push
 
 ## TODO
-- Move RDS, ElastiCache, etc.. external resources to Terraform config
-- Solve TF issues
-```
-Error: Error waiting for Elastic Beanstalk Environment (e-p9ca2vn3ea) to become ready: 1 error occurred:
-	* 2019-11-12 00:55:44.169 +0000 UTC (e-p9ca2vn3ea) : [Instance: i-0899f67a07862d1d3] Command failed on instance. Return code: 1 Output: unable to sign request without credentials set - (Aws::Errors::MissingCredentialsError). 
-Hook /opt/elasticbeanstalk/addons/sqsd/hooks/firstboot/02-start-sqsd.sh failed. For more detail, check /var/log/eb-activity.log using console or EB CLI.
-
-
-
-  on platform.tf line 36, in resource "aws_elastic_beanstalk_environment" "worker":
-  36: resource "aws_elastic_beanstalk_environment" "worker" {
-
-
-
-Error: Error creating DB Instance: DBInstanceAlreadyExists: DB Instance already exists
-	status code: 400, request id: 896bde4e-66d5-4812-926e-02c6f532bd46
-
-  on platform.tf line 123, in resource "aws_db_instance" "db":
- 123: resource "aws_db_instance" "db" {
-
-
-
-Error: [ERR]: Error building changeset: InvalidChangeBatch: [Tried to create resource record set [name='_f30674a3a8451828b494c3d5228ac643.hankehly.xyz.', type='CNAME'] but it already exists]
-	status code: 400, request id: c45a612e-b12a-4a93-a396-a0fe35842e30
-
-  on platform.tf line 176, in resource "aws_route53_record" "cert_validation":
- 176: resource "aws_route53_record" "cert_validation" {
-```
+- SQS triggered jobs on worker instances
 
 ## Q&A
 
-#### In this example project, what AWS resources are managed by terraform and what are managed by beanstalk?
+#### In this example project, which AWS resources are managed by terraform and which are managed by Elastic Beanstalk?
 | Resource                      | Terraform | Beanstalk |
 |:------------------------------|:----------|:---------:|
-| EC2 Instance Creation         |           |     √     |
+| EC2 Instances                 |           |     √     |
 | RDS                           |     √     |           |
 | ElastiCache                   |     √     |           |
 | Security Groups               |     √     |           |
@@ -73,28 +47,30 @@ Error: [ERR]: Error building changeset: InvalidChangeBatch: [Tried to create res
 | CloudFront                    |     √     |           |
 
 
-#### How do I connect my domain name with cloudfront distribution?
+#### How do I connect my domain name with my CloudFront distribution?
 Follow [this guide](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/routing-to-cloudfront-distribution.html). Be careful about the record type.
 
-#### How do I rename an environment?
-You have to back up the environment and the restore it. Someone [asked this question](https://forums.aws.amazon.com/thread.jspa?threadID=151978) on the forum. And someone else created a [blog post](http://pminkov.github.io/blog/how-to-shut-down-and-restore-an-elastic-beanstalk-environment.html) about it.
+#### How do I rename an Elastic Beanstalk environment?
+You have to back up the environment and the restore it. Someone [asked this question](https://forums.aws.amazon.com/thread.jspa?threadID=151978) on the AWS forum, and someone else created a [blog post](http://pminkov.github.io/blog/how-to-shut-down-and-restore-an-elastic-beanstalk-environment.html) about it.
 
-#### What things can I specify in an `.ebextensions` config file?
-See [this page](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/customize-containers-ec2.html)
+#### What can I specify in an `.ebextensions` config file?
+Packages to install on the machine, users to create, commands you want to execute on deployment, etc.. See [this page](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/customize-containers-ec2.html) for a full list.
 
-#### Does EB pull my changes to files from GitHub, SCM?
-It pulls changes to your application from `.git` not GitHub.
+#### Do I need to push my changes to GitHub in order to deploy them?
+No. Elastic Beanstalk uses your local `.git` folder to build and deploy your application.
 
 #### How do I specify a version label when deploying?
+Like this:
 ```bash
 # example: eb deploy -l v1.2.3
 eb deploy (-l|--label) [VERSION]
 ```
-#### What is the `.elasticbeanstalk` folder?
-It's a configuration your local `eb` file uses. You don't commit it to SCM.
 
-#### How do I execute a command during the deployment process?
-If the command is supposed to be run before the code is "live" you can add an item to the `container_commands` section of one of your `.ebextensions` config files.
+#### What is the `.elasticbeanstalk` folder?
+It's a configuration file that tracks your local machine preferences for the `eb` command. You don't need to commit it to SCM.
+
+#### What if I want to execute some arbitrary command on my web server?
+If the command is supposed to be run just before the code is "live" then you can add an item to the `container_commands` section of one of your `.ebextensions` config files. The commands get executed in order.
 ```yaml
 container_commands:
   01_collectstatic:
@@ -105,10 +81,10 @@ container_commands:
 ```
 
 #### What does `leader_only` mean?
-It's there so you don't run the same command more than once. Only the first instance to be deployed should run this command.
+It means that only the first instance deployed should execute that command. It exists so that you don't run the same command more than once.
 
-#### I renamed the django app folder, what do I do now?
-You need to keep the `DJANGO_SETTINGS_MODULE` and `WSGIPath` settings up to date in your `.ebextensions` config files.
+#### What should I do if I renamed the django app folder?
+You just need to keep the `DJANGO_SETTINGS_MODULE` and `WSGIPath` settings up to date in your `.ebextensions` config files.
 ```yaml
 option_settings:
   aws:elasticbeanstalk:application:environment:
@@ -121,60 +97,37 @@ option_settings:
 TODO
 
 #### How do I temporarily stop an environment without terminating it?
-Use time based scaling (see Configuration -> Capacity -> Time Based Scaling)
+You can temporarily stop an environment by using time based scaling. See "Configuration -> Capacity -> Time Based Scaling" in the console. You will basically create a "stop" event to run 2 minutes from now, and that will stop your instances.
 - [Link](https://jun711.github.io/aws/how-to-pause-or-stop-elastic-beanstalk-environment-from-running/#:~:text=There%20is%20no%20straightforward%20way,pay%20when%20you%20use%20it.)
 - [Link](https://hackernoon.com/how-to-save-on-aws-elastic-beanstalk-ec2-machines-by-putting-them-to-sleep-d8533aeb610a)
 
-#### How to add an RDS instance?
-Create an instance and connect in the GUI configuration screen, or create one with the beanstalk wizard. This will set the `RDS_*` environment variables for use in the app. [See more](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/create-deploy-python-rds.html).
-```python
-if "RDS_HOSTNAME" in os.environ:
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.postgresql",
-            "NAME": os.environ["RDS_DB_NAME"],
-            "USER": os.environ["RDS_USERNAME"],
-            "PASSWORD": os.environ["RDS_PASSWORD"],
-            "HOST": os.environ["RDS_HOSTNAME"],
-            "PORT": os.environ["RDS_PORT"],
-        }
-    }
-else:
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
-        }
-```
+#### How can I attach an RDS instance?
+You can do this [via the Elastic Beanstalk console](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/create-deploy-python-rds.html), but I chose to create the instance separately in this example repository. Just create your RDS instance and reference the endpoint from your python application.
 
 #### How to swap an RDS instance with another one?
-TODO
+In this case you would have to change the endpoint URL that you reference in your python application from the old RDS endpoint to the new RDS endpoint url and re-deploy.
 
 #### I want to add an environment variable to all my web servers
-Option 1) Use the ebcli commandline tool
+You can do either of the following. The both SHOULD have the same result, and you should be able to see all the variables in the Elastic Beanstalk console.
+1. Use the AWS console (see Configuration -> Software -> Environment properties)
+1. Use the ebcli commandline tool
 ```sh
 eb setenv FOO=VAR
 ```
-Option 2) Use the AWS console
-See Configuration -> Software -> Environment properties
 
-#### How do I roll back to the previous version AND sync the database?
+#### How do I roll back to the previous version of my app AND run backward DB migrations?
 TODO
 
 #### I want to include a file in the deployed app but not commit it to SCM
-Copy `.gitignore` to `.ebignore` if you haven't already. Add the file to `.gitignore` and leave it out of `.ebignore`. EB will deploy it, but git will not manage it.
+Add the file to `.gitignore` and leave it out of `.ebignore`. EB will deploy it, but git will ignore it.
 
-#### How do I update the healthcheck url
-Use the AWS console (see Configuration -> Load Balancer -> Processes). You should also be able to set an `option_setting` like below, but it doesn't get applied for some reason..
+#### How do I update the healthcheck url?
+Use the AWS console (see Configuration -> Load Balancer -> Processes). You should also be able to set an `option_setting` like below, but it did not work for me one time..
 ```yaml
 option_settings:
   aws:elasticbeanstalk:application:
     Application Healthcheck URL: /ping/
 ```
-
-#### How do I force restart the web server?
-TODO
-
 
 ## Troubleshooting
 #### The following resource(s) failed to create: MyCacheSecurityGroup.
