@@ -126,6 +126,9 @@ option_settings:
     Application Healthcheck URL: /ping/
 ```
 
+#### How do I know my worker jobs are being executed on worker instances and not on my webserver?
+TODO
+
 ## Troubleshooting
 Here are some errors I encountered during development. I will leave them here for future reference.
 #### The following resource(s) failed to create: MyCacheSecurityGroup.
