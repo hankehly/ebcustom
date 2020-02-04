@@ -16,6 +16,9 @@ class TaskViewSet(ModelViewSet):
 
     @action(detail=False)
     def get_cached_value(self, request, *args, **kwargs):
+        """
+        This is just to demonstrate that we can use redis
+        """
         current_time_iso = datetime.datetime.now().isoformat()
         cached_value = cache.get_or_set('current_time', current_time_iso, 30)
 
