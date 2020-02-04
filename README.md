@@ -130,6 +130,7 @@ option_settings:
 ```
 
 ## Troubleshooting
+Here are some errors I encountered during development. I will leave them here for future reference.
 #### The following resource(s) failed to create: MyCacheSecurityGroup.
 ```
 $ eb deploy
