@@ -128,27 +128,3 @@ option_settings:
 
 #### How do I know my worker jobs are being executed on worker instances and not on my webserver?
 TODO
-
-## Troubleshooting
-Here are some errors I encountered during development. I will leave them here for future reference.
-#### The following resource(s) failed to create: MyCacheSecurityGroup.
-```
-$ eb deploy
-2019-11-05 00:25:19    INFO    Environment update is starting.      
-2019-11-05 00:25:42    ERROR   Service:AmazonCloudFormation, Message:Stack named 'awseb-e-wbmxbruwe8-stack' aborted operation. Current state: 'UPDATE_ROLLBACK_IN_PROGRESS'  Reason: The following resource(s) failed to create: [MyCacheSecurityGroup]. 
-2019-11-05 00:25:42    ERROR   Creating security group named: sg-0fee88b49cda8b643 failed Reason: Invalid id: "awseb-e-wbmxbruwe8-stack-AWSEBSecurityGroup-GTCFKNA6VCPQ" (expecting "sg-...") (Service: AmazonEC2; Status Code: 400; Error Code: InvalidGroupId.Malformed; Request ID: fdc762ec-f799-4753-bf2e-110d62ccf87d)
-2019-11-05 00:25:42    ERROR   Failed to deploy application. 
-```
-The documentation uses `SourceSecurityGroupId` instead of `SourceSecurityGroupName` in their example
-```yaml
-SourceSecurityGroupId: # << should be SourceSecurityGroupName
-  Ref: "AWSEBSecurityGroup"
-```
-After changing:
-```
-2019-11-05 00:34:15    INFO    Environment update is starting.      
-2019-11-05 00:34:38    INFO    Created security group named: sg-06269f92dba330485
-2019-11-05 00:39:01    INFO    Deploying new version to instance(s).
-2019-11-05 00:40:00    INFO    New application version was deployed to running EC2 instances.
-2019-11-05 00:40:00    INFO    Environment update completed successfully.
-```
