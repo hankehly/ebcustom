@@ -127,4 +127,4 @@ option_settings:
 ```
 
 #### How do I know my worker jobs are being executed on worker instances and not on my webserver?
-TODO
+There is a daemon process that lives on each worker instance. It watches for SQS messages and makes requests to a given endpoint on localhost. So your webserver does not receive these requests. [See here](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/using-features-managing-env-tiers.html) for more information on the worker tier.
