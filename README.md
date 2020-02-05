@@ -43,6 +43,8 @@ An example django application running on AWS Elastic Beanstalk.
 | app `option_settings`         |           |     √     |
 | CloudFront                    |     √     |           |
 
+#### Which python versions can I use?
+See the list of [supported python platforms](https://docs.aws.amazon.com/elasticbeanstalk/latest/platforms/platforms-supported.html#platforms-supported.python).
 
 #### How do I connect my domain name with my CloudFront distribution?
 Follow [this guide](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/routing-to-cloudfront-distribution.html). Be careful about the record type.
@@ -91,7 +93,10 @@ option_settings:
 ```
 
 #### Can I have a custom uwsgi setup?
-TODO
+It looks like we have access to about [3 settings](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/create-deploy-python-container.html#python-console-settings).
+- WSGI Path
+- NumProcesses
+- NumThreads
 
 #### How do I temporarily stop an environment without terminating it?
 You can temporarily stop an environment by using time based scaling. See "Configuration -> Capacity -> Time Based Scaling" in the console. You will basically create a "stop" event to run 2 minutes from now, and that will stop your instances.
